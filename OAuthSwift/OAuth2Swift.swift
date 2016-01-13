@@ -138,20 +138,6 @@ public class OAuth2Swift: OAuthSwift {
             success(credential: self.client.credential, response: response, parameters: responseParameters)
         }
 
-        if self.content_type == "multipart/form-data" {
-            self.client.postMultiPartRequest(self.access_token_url!, method: .POST, parameters: parameters, success: successHandler, failure: failure)
-        } else {
-            // special headers
-            var headers: [String:String]? = nil
-            if accessTokenBasicAuthentification {
-                let authentification = "\(self.consumer_key):\(self.consumer_secret)".dataUsingEncoding(NSUTF8StringEncoding)
-                if let base64Encoded = authentification?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-                {
-                    headers = ["Authorization": "Basic \(base64Encoded)"]
-                }
-            }
-            self.client.request(self.access_token_url!, method: .POST, parameters: parameters, headers: headers, success: successHandler, failure: failure)
-        }
     }
     
     @available(*, deprecated=0.5.0, message="Use OAuthSwift.handleOpenURL()")
